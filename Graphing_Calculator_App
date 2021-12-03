@@ -1,1 +1,99 @@
+import tkinter as tk
 
+
+class GraphCalcApp(tk.Tk):
+    
+    def __init__(self, *args, **kwargs):
+        
+        tk.Tk.__init__(self, *args, **kwargs)
+        
+        container = tk.Frame(self)
+        container.pack(side = 'top', fill = 'both', expand = True)
+        container.grid_rowconfigure(0, weight = 1)
+        container.grid_columnconfigure(0, weight = 1)
+        
+        self.frames = {}
+        frame = CalcPage(container, self)
+        self.frames[CalcPage] = frame
+        frame.grid(row = 0, column = 0, sticky = 'nsew')
+        
+        self.show_frame(CalcPage)
+        
+    def show_frame(self, cont):
+        
+        frame = self.frames[cont]
+        frame.tkraise()
+        
+class CalcPage(tk.Frame):
+    
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        
+        def input_button(button):
+            global user_input
+            user_input = user_input + str(button)
+            input_value.set(user_input)
+        
+        def clear_button():
+            global user_input
+            user_input = ''
+            input_value.set('')
+            
+        def on_button():
+            global user_input
+            user_input = ''
+            input_value.set('')
+            
+        def equals_button():
+             global user_input
+             result = str(eval(user_input))
+             input_value.set(result)
+             user_input = ''
+        
+        
+        input_value = tk.StringVar()
+
+        input_frame = tk.Frame(self, width = 150, height = 50, relief = 'ridge', borderwidth = 3) 
+        input_frame.grid()
+        
+        input_field = tk.Entry(input_frame, font = ('arial', 18, 'bold'), textvariable = input_value, width = 25, justify = 'right')
+        input_field.grid(row = 0, column = 0)
+        
+        
+        button_frame = tk.Frame(self, width = 320, height = 280, relief = 'ridge', borderwidth = 3)
+        button_frame.grid()
+        
+        on = tk.Button(button_frame, text = 'ON', width = 10, height = 3, command = lambda: on_button()).grid(row = 0, column = 0)
+        clear = tk.Button(button_frame, text = 'C', width = 21, height = 3, command = lambda: clear_button()).grid(row = 0, column = 1, columnspan = 2)
+        divide = tk.Button(button_frame, text = '/', width = 10, height = 3, command = lambda: input_button('/')).grid(row = 0, column = 3)
+    
+        seven = tk.Button(button_frame, text = '7', width = 10, height = 3, command = lambda: input_button(7)).grid(row = 1, column = 0)
+        eight = tk.Button(button_frame, text = '8', width = 10, height = 3, command = lambda: input_button(8)).grid(row = 1, column = 1)
+        nine = tk.Button(button_frame, text = '9', width = 10, height = 3, command = lambda: input_button(9)).grid(row = 1, column = 2)
+        multiply = tk.Button(button_frame, text = '*', width = 10, height = 3, command = lambda: input_button('*')).grid(row = 1, column = 3)
+    
+        four = tk.Button(button_frame, text = '4', width = 10, height = 3, command = lambda: input_button(4)).grid(row = 2, column = 0)
+        five = tk.Button(button_frame, text = '5', width = 10, height = 3, command = lambda: input_button(5)).grid(row = 2, column = 1)
+        six = tk.Button(button_frame, text = '6', width = 10, height = 3, command = lambda: input_button(6)).grid(row = 2, column = 2)
+        minus = tk.Button(button_frame, text = '-', width = 10, height = 3, command = lambda: input_button('-')).grid(row = 2, column = 3)
+    
+        one = tk.Button(button_frame, text = '1', width = 10, height = 3, command = lambda: input_button(1)).grid(row = 3, column = 0)
+        two = tk.Button(button_frame, text = '2', width = 10, height = 3, command = lambda: input_button(2)).grid(row = 3, column = 1)
+        three = tk.Button(button_frame, text = '3', width = 10, height = 3, command = lambda: input_button(3)).grid(row = 3, column = 2)
+        addition = tk.Button(button_frame, text = '+', width = 10, height = 3, command = lambda: input_button('+')).grid(row = 3, column = 3)
+    
+        zero = tk.Button(button_frame, text = '0', width = 10, height = 3, command = lambda: input_button(0)).grid(row = 4, column = 0)
+        point = tk.Button(button_frame, text = '.', width = 10, height = 3, command = lambda: input_button('.')).grid(row = 4, column = 1)
+        equals = tk.Button(button_frame, text = '=', width = 10, height = 3, command = lambda: equals_button()).grid(row = 4, column = 2)
+        back = tk.Button(button_frame, text = 'BACK', width = 10, height = 3).grid(row = 4, column = 3)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+app = GraphCalcApp()
+app.mainloop()        
