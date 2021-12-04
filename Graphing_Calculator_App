@@ -1,10 +1,10 @@
 import tkinter as tk
 
+LARGE_FONT = ('Verdana', 12)
 
 class GraphCalcApp(tk.Tk):
     
     def __init__(self, *args, **kwargs):
-        
         tk.Tk.__init__(self, *args, **kwargs)
         
         container = tk.Frame(self)
@@ -13,17 +13,34 @@ class GraphCalcApp(tk.Tk):
         container.grid_columnconfigure(0, weight = 1)
         
         self.frames = {}
-        frame = CalcPage(container, self)
-        self.frames[CalcPage] = frame
-        frame.grid(row = 0, column = 0, sticky = 'nsew')
         
-        self.show_frame(CalcPage)
+        for F in (StartPage, CalcPage, GraphPage):
+            frame = F(container, self)
+            self.frames[F] = frame
+            frame.grid(row = 0, column = 0, sticky = 'nsew')
+        
+        self.show_frame(StartPage)
         
     def show_frame(self, cont):
-        
         frame = self.frames[cont]
         frame.tkraise()
+
+
+class StartPage(tk.Frame):
+    
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
         
+        start_label = tk.Label(self, text = 'Graphing Calculator App', font = LARGE_FONT)
+        start_label.pack(pady = 10, padx = 10)
+        
+        calc_button = tk.Button(self, text = 'Calculator', command = lambda: controller.show_frame(CalcPage))
+        calc_button.pack()
+        
+        graph_button = tk.Button(self, text = 'Graphing', command = lambda: controller.show_frame(GraphPage))
+        graph_button.pack()
+
+
 class CalcPage(tk.Frame):
     
     def __init__(self, parent, controller):
@@ -50,7 +67,6 @@ class CalcPage(tk.Frame):
              input_value.set(result)
              user_input = ''
         
-        
         input_value = tk.StringVar()
 
         input_frame = tk.Frame(self, width = 150, height = 50, relief = 'ridge', borderwidth = 3) 
@@ -58,7 +74,6 @@ class CalcPage(tk.Frame):
         
         input_field = tk.Entry(input_frame, font = ('arial', 18, 'bold'), textvariable = input_value, width = 25, justify = 'right')
         input_field.grid(row = 0, column = 0)
-        
         
         button_frame = tk.Frame(self, width = 320, height = 280, relief = 'ridge', borderwidth = 3)
         button_frame.grid()
@@ -85,11 +100,18 @@ class CalcPage(tk.Frame):
         zero = tk.Button(button_frame, text = '0', width = 10, height = 3, command = lambda: input_button(0)).grid(row = 4, column = 0)
         point = tk.Button(button_frame, text = '.', width = 10, height = 3, command = lambda: input_button('.')).grid(row = 4, column = 1)
         equals = tk.Button(button_frame, text = '=', width = 10, height = 3, command = lambda: equals_button()).grid(row = 4, column = 2)
-        back = tk.Button(button_frame, text = 'BACK', width = 10, height = 3).grid(row = 4, column = 3)
+        back = tk.Button(button_frame, text = 'BACK', width = 10, height = 3, command = lambda: controller.show_frame(StartPage)).grid(row = 4, column = 3)
         
+class GraphPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
         
+        start_label = tk.Label(self, text = 'Graphing', font = LARGE_FONT)
+        start_label.pack(pady = 10, padx = 10)
         
-        
+        back = tk.Button(self, text = 'Back', command = lambda: controller.show_frame(StartPage))
+        back.pack()
         
         
         
