@@ -6,6 +6,7 @@ class GraphCalcApp(tk.Tk):
     """Window that encompasses all frames"""
     def __init__(self):
         tk.Tk.__init__(self)
+        tk.Tk.wm_title(self, 'Graphing Calculator App')
         
         container = tk.Frame(self)
         container.pack(side = 'top', fill = 'both', expand = True)
@@ -21,13 +22,14 @@ class GraphCalcApp(tk.Tk):
         
         self.show_frame(StartPage)
         
-    def show_frame(self, cont):                #brings a certain frame to the front, effectively changing the 'window' the user sees
+    def show_frame(self, cont):
+        '''brings a certain frame to the front, effectively changing the 'window' the user sees'''
         frame = self.frames[cont]     
         frame.tkraise()              
 
 
 class StartPage(tk.Frame):
-    """Start page; allows user to navigate to the calculator or the plotting tool"""
+    """Start page; allows user to navigate to the calculator page or the graphing page"""
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         
@@ -46,21 +48,24 @@ class CalcPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         
-        def input_button(button):                       #takes user input via a button, turning it into string and adding it on to the end of existing inputs
+        def input_button(button):
+            '''Takes user input via a button, turns the value associated with the button into a string and adds it on to the end of existing inputs. These inputs are displayed in the input frame'''
             global user_input
             user_input = user_input + str(button)           
             input_value.set(user_input)
         
-        def clear_button():                           #clears the users inputs (also acts as an on button as the user_input variable needs to be initialised before any inputs can be taken and I can't figure out a better way to do it)
+        def clear_button():
+            '''Clears the users inputs (also acts as an on button as the user_input variable needs to be initialised before any inputs can be taken).'''
             global user_input
             user_input = ''
             input_value.set('')
             
-        def equals_button():                        #calculates the result of the users inputs and displays it
-             global user_input
-             result = str(eval(user_input))
-             input_value.set(result)
-             user_input = ''
+        def equals_button():      
+            '''calculates the result of the users inputs using the eval() function and displays the answer in the input frame'''
+            global user_input
+            result = str(eval(user_input))
+            input_value.set(result)
+            user_input = ''
         
         input_value = tk.StringVar()
 
@@ -100,7 +105,7 @@ class CalcPage(tk.Frame):
         back = tk.Button(button_frame, text = 'BACK', width = 10, height = 3, command = lambda: controller.show_frame(StartPage)).grid(row = 4, column = 3, columnspan = 2, sticky = 'ew')
         
 class GraphPage(tk.Frame):
-    """Plotting page"""
+    """Grpahing page"""
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         
