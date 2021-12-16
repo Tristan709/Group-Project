@@ -20,6 +20,24 @@ def labels():
     plt.xlabel(labels[1])
     plt.ylabel(labels[2])
 
+def pop():
+    '''
+    Requests the size of the dataset to be plotted. 
+    '''
+    while True:
+        global pop   
+        pop = input('Please enter the sample size: ') 
+        is_num0 = None
+        try:
+            is_num0 = int(pop)
+        except:
+            if (is_num0 == None):
+                print('Enter a numerical value!')
+            continue
+        else:
+            pop = int(pop)
+            break  
+    
 
 def x_values():                                                 
     '''
@@ -32,8 +50,7 @@ def x_values():
     
     for i in range(0, pop):
         while True:
-            ext = input()
-            ## y_sample.append(ext)  
+            ext = input()  
             is_num0 = None
             try:
                 is_num0 = float(ext)
@@ -112,7 +129,7 @@ def y_scale():
 
 labels()
 
-pop = int(input('Please enter the sample size: '))
+pop()
 
 x_values()
 y_values()
